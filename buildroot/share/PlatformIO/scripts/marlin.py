@@ -19,7 +19,10 @@ def copytree(src, dst, symlinks=False, ignore=None):
 			shutil.copy2(s, d)
 
 def replace_define(field, value):
-	for define in env['CPPDEFINES']:
+	#for define in env['CPPDEFINES']:
+	# This fixes the error `#RuntimeError: deque mutated during iteration`. `env['CPPDEFINES']` needed to be copied into a new var and used that way
+	envdefs = env['CPPDEFINES'].copy()
+	for define in envdefs:
 		if define[0] == field:
 			env['CPPDEFINES'].remove(define)
 	env['CPPDEFINES'].append((field, value))
